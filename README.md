@@ -75,7 +75,9 @@ spec:
     resources: {}  
   dnsPolicy: ClusterFirst  
   restartPolicy: Never  
-status: {}// create a pod   
+status: {}
+
+// create a pod   
 kubectl create -f nginx-pod.yaml
 ```
 
@@ -100,7 +102,8 @@ kubectl describe pod nginx
 **_11\. Delete the pod you just created_**
 
 ```
-kubectl delete po nginxkubectl delete -f nginx-pod.yaml
+kubectl delete po nginx
+kubectl delete -f nginx-pod.yaml
 ```
 
 **_12\. Delete the pod you just created without any delay (force delete)_**
@@ -123,7 +126,7 @@ kubectl set image pod/nginx nginx=nginx:1.15-alpine
 kubectl describe po nginx
 
 // another way it will open vi editor and change the version  
-kubeclt edit po nginx
+kubectl edit po nginx
 
 kubectl describe po nginx
 ```
@@ -133,13 +136,14 @@ kubectl describe po nginx
 ```
 kubectl set image pod/nginx nginx=nginx:1.17.1  
 kubectl describe po nginx  
-kubectl get po nginx -w # watch it
+kubectl get po nginx -w 
+# watch it
 ```
 
 **_16\. Check the Image version without the describe command_**
 
 ```
-kubectl get po nginx -o jsonpath='{.spec.containers\[\].image}{"\\n"}'
+kubectl get po nginx -o jsonpath='{.spec.containers[].image}{"\n"}'
 ```
 
 **_17\. Create the nginx pod and execute the simple shell on the pod_**
@@ -205,15 +209,15 @@ kubectl run busybox --image=nginx --restart=Never -it --rm -- echo "How are you"
 kubectl run nginx --image=nginx --restart=Never --port=80
 
 // List the pod with different verbosity  
-kubectl get po nginx --v=7  
-kubectl get po nginx --v=8  
+kubectl get po nginx --v=7
+kubectl get po nginx --v=8
 kubectl get po nginx --v=9
 ```
 
 **_26\. List the nginx pod with custom columns POD\_NAME and POD\_STATUS_**
 
 ```
-kubectl get po -o=custom-columns="POD\_NAME:.metadata.name, POD\_STATUS:.status.containerStatuses\[\].state"
+kubectl get po -o=custom-columns="POD_NAME:.metadata.name, POD_STATUS:.status.containerStatuses[].state"
 ```
 
 **_27\. List all the pods sorted by name_**
@@ -225,7 +229,7 @@ kubectl get pods --sort-by=.metadata.name
 **_28\. List all the pods sorted by created timestamp_**
 
 ```
-kubectl get pods--sort-by=.metadata.creationTimestamp
+kubectl get pods --sort-by=.metadata.creationTimestamp
 ```
 
 Multi-Container Pods (10%)
