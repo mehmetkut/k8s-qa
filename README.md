@@ -42,7 +42,7 @@ kubectl get svc -n <namespace name>
 **_5\. List all the pods showing name and namespace with a json path expression_**
 
 ```
-kubectl get pods -o=jsonpath="{.items\[\*\]\['metadata.name', 'metadata.namespace'\]}"
+kubectl get pods -o=jsonpath="{.items[*]['metadata.name', 'metadata.namespace']}"
 ```
 
 **_6\. Create an nginx pod in a default namespace and verify the pod running_**
