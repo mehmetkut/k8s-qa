@@ -49,7 +49,9 @@ kubectl get pods -o=jsonpath="{.items[*]['metadata.name', 'metadata.namespace']}
 
 ```
 // creating a pod  
-kubectl run nginx --image=nginx --restart=Never// List the pod  
+kubectl run nginx --image=nginx --restart=Never
+
+// List the pod  
 kubectl get po
 ```
 
