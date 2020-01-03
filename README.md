@@ -17,7 +17,8 @@ Practice questions based on these concepts
 
 **_1\. List all the namespaces in the cluster_**
 ```
-kubectl get namespaceskubectl get ns
+kubectl get namespaces
+kubectl get ns
 ```
 
 **_2\. List all the pods in all namespaces_**
