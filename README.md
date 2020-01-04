@@ -243,7 +243,6 @@ Practice questions based on these concepts
 
 ```
 // first create single container pod with dry run flag
-
 kubectl run busybox --image=busybox --restart=Never --dry-run -o yaml -- bin/sh -c "sleep 3600; ls" > multi-container.yaml
 
 // edit the pod to following yaml and create it  
@@ -309,7 +308,7 @@ kubectl get po multi-cont-pod
 ```
 // exec into main container  
 kubectl exec -it  multi-cont-pod -c main-container -- sh  
-cat /var/log/main.txt
+cat /var/log/index.html
 
 // exec into sidecar container  
 kubectl exec -it  multi-cont-pod -c sidecar-container -- sh  
@@ -344,16 +343,16 @@ kubectl get pods --show-labels
 ```
 kubectl run nginx-dev1 --image=nginx --restart=Never --labels=env=dev  
 kubectl run nginx-dev2 --image=nginx --restart=Never --labels=env=dev  
-kubectl run nginx-dev3 --image=nginx --restart=Never --labels=env=devkubectl run 
+kubectl run nginx-dev3 --image=nginx --restart=Never --labels=env=dev
 
-nginx-prod1 --image=nginx --restart=Never --labels=env=prod  
+kubectl run nginx-prod1 --image=nginx --restart=Never --labels=env=prod
 kubectl run nginx-prod2 --image=nginx --restart=Never --labels=env=prod
 ```
 
 **_38\. Verify all the pods are created with correct labels_**
 
 ```
-kubeclt get pods --show-labels
+kubectl get pods --show-labels
 ```
 
 **_39\. Get the pods with label env=dev_**
@@ -401,22 +400,26 @@ kubectl get pods -l 'env in (dev,prod)' --show-labels
 **_46\. Change the label for one of the pod to env=uat and list all the pods to verify_**
 
 ```
-kubectl label pod/nginx-dev3 env=uat --overwrite  
+kubectl label pod/nginx-dev3 env=uat --overwrite
 kubectl get pods --show-labels
 ```
 
 **_47\. Remove the labels for the pods that we created now and verify all the labels are removed_**
 
 ```
-kubectl label pod nginx-dev{1..3} env-  
-kubectl label pod nginx-prod{1..2} env-kubectl get po --show-labels
+kubectl label pod nginx-dev{1..3} env-
+kubectl label pod nginx-prod{1..2} env-
+
+kubectl get po --show-labels
 ```
 
 **_48\. Let’s add the label app=nginx for all the pods and verify_**
 
 ```
-kubectl label pod nginx-dev{1..3} app=nginx  
-kubectl label pod nginx-prod{1..2} app=nginxkubectl get po --show-labels
+kubectl label pod nginx-dev{1..3} app=nginx
+kubectl label pod nginx-prod{1..2} app=nginx
+
+kubectl get po --show-labels
 ```
 
 **_49\. Get all the nodes with labels (if using minikube you would get only master node)_**
@@ -425,10 +428,10 @@ kubectl label pod nginx-prod{1..2} app=nginxkubectl get po --show-labels
 kubectl get nodes --show-labels
 ```
 
-**_50\. Label the node (minikube if you are using) nodeName=nginxnode_**
+**_50\. Label the node nodeName=nginxnode_**
 
 ```
-kubectl label node minikube nodeName=nginxnode
+kubectl label node <nodename> nodeName=nginxnode
 ```
 
 **_51\. Create a Pod that will be deployed on this node with the label nodeName=nginxnode_**
