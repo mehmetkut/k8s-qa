@@ -834,7 +834,7 @@ kubectl create -f task-pv-claim.yaml
 
 kubectl get pvc
 ```
-[task-pv-claim.yaml](https://gist.githubusercontent.com/mehmetkut/1e640f8253c534a44f269aa2687a5d67/raw/0bb1a24a754b9915a47c3ffe342a4419c782f815/task-pv-claim.yaml)
+[task-pv-claim.yaml](https://gist.githubusercontent.com/mehmetkut/1e640f8253c534a44f269aa2687a5d67/raw/a923132845fabf8089e0d1fdef2918b45bd7a2b2/task-pv-claim.yaml)
 
 
 **_99\. Delete persistent volume and PersistentVolumeClaim we just created_**
