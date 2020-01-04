@@ -715,7 +715,9 @@ kubectl create -f hello-job.yaml
 
 ```
 kubectl get job  
-kubectl get pokubectl logs hello-job-\*
+kubectl get po
+
+kubectl logs hello-job-*
 ```
 
 **_87\. Delete the job we just created_**
@@ -740,7 +742,9 @@ kubectl create -f hello-job.yaml
 
 ```
 kubectl get job -w  
-kubectl get pokubectl delete job hello-job
+kubectl get po
+
+kubectl delete job hello-job
 ```
 
 **_90\. Create the same job and make it run 10 times parallel_**
@@ -759,13 +763,15 @@ kubectl create -f hello-job.yaml
 
 ```
 kubectl get job -w  
-kubectl get pokubectl delete job hello-job
+kubectl get po
+
+kubectl delete job hello-job
 ```
 
 **_92\. Create a Cronjob with busybox image that prints date and hello from kubernetes cluster message for every minute_**
 
 ```
-kubectl create cronjob date-job --image=busybox --schedule="\*/1 \* \* \* \*" -- bin/sh -c "date; echo Hello from kubernetes cluster"
+kubectl create cronjob date-job --image=busybox --schedule="*/1 * * * *" -- bin/sh -c "date; echo Hello from kubernetes cluster"
 ```
 
 **_93\. Output the YAML file of the above cronjob_**
@@ -778,7 +784,9 @@ kubectl get cj date-job -o yaml
 
 ```
 kubectl get job  
-kubectl get pokubectl logs date-job-<jobid>-<pod>
+kubectl get po
+
+kubectl logs date-job-<jobid>-<pod>
 ```
 
 **_95\. Delete the CronJob and verify all the associated jobs and pods are also deleted._**
