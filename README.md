@@ -857,32 +857,40 @@ kubectl create -f redis-storage.yaml
 
 ```
 // first terminal  
-kubectl exec -it redis-storage /bin/sh  
+kubectl exec -it redis /bin/sh  
 cd /data/redis  
 echo 'This is called the file' > file.txt
 
 //open another tab  
-kubectl exec -it redis-storage /bin/sh  
+kubectl exec -it redis /bin/sh  
 cat /data/redis/file.txt
 ```
 
 **_102\. Delete the above pod and create again from the same yaml file and verifies there is no file.txt in the path /data/redis_**
 
 ```
-kubectl delete pod rediskubectl create -f redis-storage.yaml  
-kubectl exec -it redis-storage /bin/sh  
+kubectl delete pod redis
+
+kubectl create -f redis-storage.yaml  
+kubectl exec -it redis /bin/sh  
 cat /data/redis/file.txt // file doesn't exist
 
 [redis-storage.yaml](https://gist.githubusercontent.com/mehmetkut/18767582495737164b2cc4da8ce1d6ed/raw/f58e461d655d2f3f3cf18d66312d853583c27f78/redis-storage.yaml)
 ```
 
-**_103\. Create PersistentVolume named task-pv-volume with storage 10Gi, access modes ReadWriteOnce, storageClassName manual, and volume at /mnt/data and Create a PersistentVolumeClaim of at least 3Gi storage and access mode ReadWriteOnce and verify status is Bound_**
+**_103\. Create PersistentVolume named task-pv-volume with storage 10Gi, access modes ReadWriteOnce, storageClassName default, and volume at /mnt/data and Create a PersistentVolumeClaim of at least 3Gi storage and access mode ReadWriteOnce and verify status is Bound_**
 
 ```
 kubectl create -f task-pv-volume.yaml  
-kubectl create -f task-pv-claim.yamlkubectl get pv  
+kubectl create -f task-pv-claim.yaml
+
+kubectl get pv  
 kubectl get pvc
 ```
+
+[task-pv-volume.yaml](https://gist.githubusercontent.com/mehmetkut/d5946a14a488346e447177f709614b03/raw/d3d532ea77414f1e1623c8baae6a63a6fc3419d6/task-pv-volume.yaml)
+
+[task-pv-claim.yaml](https://gist.githubusercontent.com/mehmetkut/1e640f8253c534a44f269aa2687a5d67/raw/a923132845fabf8089e0d1fdef2918b45bd7a2b2/task-pv-claim.yaml)
 
 **_104\. Create an nginx pod with containerPort 80 and with a _PersistentVolumeClaim_ **_task-pv-claim_** **_and has a mouth path_** **"/usr/share/nginx/html"**
 
@@ -923,7 +931,8 @@ kubectl create cm myconfigmap --from-literal=appname=myapp
 **_107\. Verify the configmap we just created has this data_**
 
 ```
-// you will see under datakubectl get cm -o yaml  
+// you will see under data
+kubectl get cm -o yaml  
          or  
 kubectl describe cm
 ```
@@ -940,7 +949,9 @@ kubectl delete cm myconfigmap
 cat >> config.txt << EOF  
 key1=value1  
 key2=value2  
-EOFcat config.txt
+EOF
+
+cat config.txt
 ```
 
 **_110\. Create a configmap named keyvalcfgmap and read data from the file config.txt and verify that configmap is created correctly_**
@@ -990,7 +1001,8 @@ kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > nginx-pod.ym
 kubectl create -f nginx-pod.yml
 
 // verify  
-kubectl exec -it nginx -- envkubectl delete po nginx
+kubectl exec -it nginx -- env
+kubectl delete po nginx
 ```
 
 [nginx-pod.yaml](https://gist.githubusercontent.com/mehmetkut/0c455a26502bd81fa80e1d14b6ed2874/raw/3ea2b830e615f80e80c08a7a2cf0a302a32ad74e/nginx-pod.yaml
@@ -1000,7 +1012,6 @@ kubectl exec -it nginx -- envkubectl delete po nginx
 
 ```
 // first create a configmap cfgvolume  
-
 kubectl create cm cfgvolume --from-literal=var1=val1 --from-literal=var2=val2
 
 // verify the configmap  
@@ -1023,8 +1034,9 @@ ls
 
 ```
 // create yml file with dry-run  
-kubectl run secbusybox --image=busybox --restart=Never --dry-run -o yaml -- /bin/sh -c "sleep 3600;" > busybox.yml// edit the pod like below and create  
+kubectl run secbusybox --image=busybox --restart=Never --dry-run -o yaml -- /bin/sh -c "sleep 3600;" > busybox.yml
 
+// edit the pod like below and create  
 kubectl create -f busybox.yml
 
 // verify  
@@ -1033,7 +1045,6 @@ id // it will show the id and group
 ```
 
 [**busybox.yml**](https://gist.githubusercontent.com/mehmetkut/74f337e76eaebf059e8208204f476f7d/raw/fec5be6e1526521abe6798f57d0d251a26a1645b/busybox.yml)
-
 
 
 **_116\. Create the same pod as above this time set the securityContext for the container as well and verify that the securityContext of container overrides the Pod level securityContext._**
@@ -1216,7 +1227,9 @@ kubectl get sa admin -o yaml
 **_131\. Create a busybox pod which executes this command sleep 3600 with the service account admin and verify_**
 
 ```
-kubectl run busybox --image=busybox --restart=Never --dry-run -o yaml -- /bin/sh -c "sleep 3600" > busybox.ymlkubectl create -f busybox.yml
+kubectl run busybox --image=busybox --restart=Never --dry-run -o yaml -- /bin/sh -c "sleep 3600" > busybox.yml
+
+kubectl create -f busybox.yml
 
 // verify  
 kubectl describe po busybox
@@ -1246,7 +1259,9 @@ kubectl run nginx --image=nginx --restart=Never --port=80 --dry-run -o yaml > ng
 kubectl create -f nginx-pod.yaml
 
 // verify  
-kubectl describe pod nginx | grep -i readinesskubectl delete po nginx
+kubectl describe pod nginx | grep -i readiness
+
+kubectl delete po nginx
 ```
 
 [**nginx-pod.yaml**](https://gist.githubusercontent.com/mehmetkut/f17baca532059a0f24e23e5ae732d8f2/raw/0f7b5219a65b81b86fc31082a1f45dfea99e34df/nginx-pod.yaml)
@@ -1260,7 +1275,9 @@ kubectl run nginx --image=nginx --restart=Never --port=80 --dry-run -o yaml > ng
 kubectl create -f nginx-pod.yaml
 
 // verify  
-kubectl describe pod nginx | grep -i readinesskubectl delete po nginx
+kubectl describe pod nginx | grep -i readiness
+
+kubectl delete po nginx
 ```
 
 [**nginx-pod.yaml**](https://gist.githubusercontent.com/mehmetkut/c91864ae29d8c290537206dd63c0ef72/raw/cd622ebaeae59fb969d6c7964f7ea3e9ec87d640/nginx-pod.yaml)
@@ -1298,13 +1315,15 @@ kubectl create -f nginx-pod.yaml
 **_137\. Create a busybox pod with this command “echo I am from busybox pod; sleep 3600;” and verify the logs._**
 
 ```
-kubectl run busybox --image=busybox --restart=Never -- /bin/sh -c "echo I am from busybox pod; sleep 3600;"kubectl logs busybox
+kubectl run busybox --image=busybox --restart=Never -- /bin/sh -c "echo I am from busybox pod; sleep 3600;"
+kubectl logs busybox
 ```
 
 **_138\. copy the logs of the above pod to the busybox-logs.txt and verify_**
 
 ```
-kubectl logs busybox > busybox-logs.txtcat busybox-logs.txt
+kubectl logs busybox > busybox-logs.txt
+cat busybox-logs.txt
 ```
 
 **_139\. List all the events sorted by timestamp and put them into file.log and verify_**
@@ -1313,7 +1332,8 @@ kubectl logs busybox > busybox-logs.txtcat busybox-logs.txt
 kubectl get events --sort-by=.metadata.creationTimestamp
 
 // putting them into file.log  
-kubectl get events --sort-by=.metadata.creationTimestamp > file.logcat file.log
+kubectl get events --sort-by=.metadata.creationTimestamp > file.log
+cat file.log
 ```
 
 **_140\. Create a pod with an image alpine which executes this command ”while true; do echo ‘Hi I am from alpine’; sleep 5; done” and verify and follow the logs of the pod._**
