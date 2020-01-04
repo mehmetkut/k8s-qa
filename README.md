@@ -477,7 +477,9 @@ kubectl describe po nginx-prod{1..2} | grep -i annotations
 
 ```
 kubectl annotate pod nginx-dev{1..3} name-  
-kubectl annotate pod nginx-prod{1..2} name-kubectl describe po nginx-dev{1..3} | grep -i annotations  
+kubectl annotate pod nginx-prod{1..2} name-
+
+kubectl describe po nginx-dev{1..3} | grep -i annotations  
 kubectl describe po nginx-prod{1..2} | grep -i annotations
 ```
 
@@ -523,7 +525,9 @@ kubectl get pods -l app=webapp
 **_62\. Scale the deployment from 5 replicas to 20 replicas and verify_**
 
 ```
-kubectl scale deploy webapp --replicas=20kubectl get po -l app=webapp
+kubectl scale deploy webapp --replicas=20
+
+kubectl get po -l app=webapp
 ```
 
 **_63\. Get the deployment rollout status_**
@@ -548,7 +552,8 @@ kubectl get po -l app=webapp -o yaml
 **_66\. Delete the deployment you just created and watch all the pods are also being deleted_**
 
 ```
-kubectl delete deploy webappkubectl get po -l app=webapp -w
+kubectl delete deploy webapp
+kubectl get po -l app=webapp -w
 ```
 
 **_67\. Create a deployment of webapp with image nginx:1.17.1 with container port 80 and verify the image version_**
@@ -568,13 +573,16 @@ kubectl describe deploy webapp | grep Image
 **_68\. Update the deployment with the image version 1.17.4 and verify_**
 
 ```
-kubectl set image deploy/webapp nginx=nginx:1.17.4kubectl describe deploy webapp | grep Image
+kubectl set image deploy/webapp nginx=nginx:1.17.4
+kubectl describe deploy webapp | grep Image
 ```
 
 **_69\. Check the rollout history and make sure everything is ok after the update_**
 
 ```
-kubectl rollout history deploy webappkubectl get deploy webapp --show-labels  
+kubectl rollout history deploy webapp
+kubectl get deploy webapp --show-labels  
+
 kubectl get rs -l app=webapp  
 kubectl get po -l app=webapp
 ```
@@ -582,13 +590,15 @@ kubectl get po -l app=webapp
 **_70\. Undo the deployment to the previous version 1.17.1 and verify Image has the previous version_**
 
 ```
-kubectl rollout undo deploy webappkubectl describe deploy webapp | grep Image
+kubectl rollout undo deploy webapp
+kubectl describe deploy webapp | grep Image
 ```
 
 **_71\. Update the deployment with the image version 1.16.1 and verify the image and also check the rollout history_**
 
 ```
-kubectl set image deploy/webapp nginx=nginx:1.16.1kubectl describe deploy webapp | grep Image
+kubectl set image deploy/webapp nginx=nginx:1.16.1
+kubectl describe deploy webapp | grep Image
 
 kubectl rollout history deploy webapp
 ```
@@ -596,7 +606,8 @@ kubectl rollout history deploy webapp
 **_72\. Update the deployment to the Image 1.17.1 and verify everything is ok_**
 
 ```
-kubectl rollout undo deploy webapp --to-revision=3kubectl describe deploy webapp | grep Image
+kubectl rollout undo deploy webapp --to-revision=3
+kubectl describe deploy webapp | grep Image
 
 kubectl rollout status deploy webapp
 ```
@@ -659,7 +670,8 @@ kubectl rollout history deploy webapp --revision=9
 ```
 kubectl autoscale deploy webapp --min=10 --max=20 --cpu-percent=85
 
-kubectl get hpakubectl get pod -l app=webapp
+kubectl get hpa
+kubectl get pod -l app=webapp
 ```
 
 **_81\. Clean the cluster by deleting deployment and hpa you just created_**
